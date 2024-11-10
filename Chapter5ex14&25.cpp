@@ -21,44 +21,49 @@ Using Files—Student Line Up -
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
 int main()
 {
-	string
-		student,
-		first,
-		last;
-	int numberStudents;
+    ifstream inputFile;
 
-	cout << "Enter the number of students in the class: ";
-	cin >> numberStudents;
-	while (numberStudents < 1 || numberStudents >25)
-	{
-		cout << "Error! Enter a number between 1 and 25: " << endl;
-	}
+    string student,
+        first,
+        last;
 
-	cout << "Enter the name of the first student: ";
-	cin >> student;
+    inputFile.open("names.txt");
 
-	first = last = student;
+    if (inputFile)
+    {
+        inputFile >> student;
 
-	for (int Count = 1; Count < numberStudents; Count++)
-	{
-		cout << "Enter the first name of the next student: ";
-		cin >> student;
+        first = last = student;
 
-		if (student > last)
-			last = student;
-		if (student < first)
-			first = student;
+        while (inputFile >> student)
+        {
+            if (student < first)
+                first = student;
 
-	}
+            if (student > last)
+                last = student;
+        }
 
-	cout << endl << first << " is at the front of the line and \n"
-		<< last << " is at the end of the line \n";
+        inputFile.close();
+    }
+    else
 
-	return 0;
+    {
+        cout << "Error opening file." << endl;
+    }
+
+    cout << "First student in line = "
+        << first << endl;
+
+    cout << "Last student in line  = "
+        << last << endl << endl;
+
+    return 0;
 }
 
